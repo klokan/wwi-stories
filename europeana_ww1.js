@@ -39,6 +39,11 @@ var EWW1={
 	key: "wskey=ZICPOGYUWT"
     },
 
+    story_link: function(base){
+	//different fields are used depending on full or short query
+	return base.enclosure || base["europeana:object"];
+    },
+
     category_metadata_field: function(category){
 	return this.categories[category];
     },
@@ -61,7 +66,8 @@ var EWW1={
     },
 
     imageSize: {
-	to: function(str, size){return str.replace(/\.[^\.]*.jpg$/i, size);},
+	to: function(str, size){
+	    return str.replace(/\.[^\.]*.(jpg|bmp|pdf)$/i, "." + size + ".$1");},
 	full: function(str){return this.to(str, "full");},
 	thumb: function(str){return this.to(str, "thumb");},
 	original: function(str){return this.to(str, "original");},
@@ -81,17 +87,6 @@ var EWW1={
 	    if (query.match(/startPage=/)){return query.replace(/&startPage=[0-9]+/, start);}
 	    else {return query + start;}
 	},
-
-	/*deprecated	page: function(page){
-	    var page_part = page ? "startPage=" + page + "&" : "";
-	    var stories_part = arguments[1] ? "dc_type:story+" : "";
-	    return EWW1.query_parts.base + 
-	    stories_part +
-	    EWW1.query_parts.ww1_collection + "&" + 
-	    page_part +
-	    EWW1.query_parts.key;
-	    
-	    },*/
 
 	category_entries: function(category){
 	    var stories_part = arguments[1] ? "dc_type:story+" : "";
@@ -116,9 +111,9 @@ var EWW1={
 	var options = arguments[2] || {};
 	options.limit = options.limit || this.RESULT_LIMIT;
 	if (!options.aggregator && 
-	    (options.results || options.limit > this.RESULT_LIMIT)
+	    (options.full || options.limit > this.RESULT_LIMIT)
 	    ){
-	    options.aggregator = new EWW1.Aggregator(options.limit, callback, options.results);
+	    options.aggregator = new EWW1.Aggregator(options.limit, callback, options);
 	    callback = options.aggregator.callback;
 	}
 
@@ -127,23 +122,26 @@ var EWW1={
 	if(options.aggregator){
 	    ajax_options.context = options.aggregator;
 	}
+	else {ajax_options.context = options.context}
 
 	$.ajax(str, ajax_options);
     },
 
     //Aggregator to solve the problem of europeana only returning RESULT_LIMIT results at a time maximum
 
-    Aggregator: function(number, callback, detail){
+    Aggregator: function(number, callback){
+	options = arguments[2] || {};
 	//do several queries and store results here
 	this.results = [];
 	//optional store for full records
 	this.full_records = [];
 	this.limit = number;
-	this.detail = detail;
+	this.detail = options.full;
 
 	//when finished, tell aggregator to call the callback from the original query
 	this.complete = callback;
-	
+	this.complete_context = options.context;
+
 	var methods = EWW1.Aggregator_methods;
 	for (var method in methods){
 	    this[method] = methods[method];
@@ -162,7 +160,7 @@ var EWW1={
 		EWW1.query(EWW1.queries.page(EWW1.format_for_query(EWW1.decode(data.link),"strip"), this.results.length + 1), this.callback, {aggregator: this});
 	    }
 	    else {
-		if (!this.detail){this.complete(this.aggregate());}
+		if (!this.detail){this.complete.call(this.complete_context, this.aggregate());}
 	    }
 	},
 	
@@ -179,7 +177,7 @@ var EWW1={
 	    if (this.full_records.length == this.itemsSoFar && 
 		this.itemsSoFar == this.limit)
 		{
-		    this.complete(this.full_records);
+		    this.complete.call(this.complete_context, {items: this.full_records});
 		}
 	},
 
@@ -200,7 +198,48 @@ var EWW1={
 
     //callbacks for handling results of queries
 
-    results: {
+    callbacks: {
+	map_stories: function(data) {
+	    console.log(data.items);
+
+	    var html = "<ul>";
+	    for (var i = 0; i < data.items.length; i++){
+		var story = EWW1.story_link(data.items[i]);
+		html += "<li id='" + story + "'>" + story + "</li>";
+	    }
+	    document.getElementById('block').innerHTML = html + "</ul>";
+	    for (var i = 0; i < data.items.length; i++){
+		var story = EWW1.story_link(data.items[i]);
+		EWW1.query(EWW1.queries.story_entries(story), this.map_callback, {full: this.full, context: data.items[i]});
+	    }
+	},
+
+	render_story_summary: function(data) {
+	    console.log(data);
+	    //find an image
+	    var match, i;
+	    for (var i = 0; i < data.items.length; i++){
+		var enc = data.items[i].enclosure;
+		if (enc.match(/(jpg|bmp|png)/i)){
+		    match = i;
+		    break;
+		}
+	    }
+	    if(match == i){
+		var m = data.items[match];
+		var uri = EWW1.imageSize.thumb(m.enclosure);
+	    } 
+	    else {uri = "http://www.europeana1914-1918.eu/images/style/icons/mimetypes/pdf.png?1325158438";}
+	    var full_story = "EWW1.queries.story_entries(" + this["europeana:uri"] + "), EWW1.callbacks.map_stories, {full: true, context: {map_callback: EWW1.callbacks.render_full_story}})";
+
+	    document.getElementById(EWW1.story_link(this)).innerHTML = "<a href='#block' onClick=''><img src='" + uri + "' alt='" + uri + "'></a><p>" + this["dc:title"] + "</p>" + "<p>" + this["dcterms:alternative"] + "</p>";
+
+	},
+
+	render_full_story: function(data) {
+	    
+	},
+
 	thumbs: function(data) {
 	    var html = "<ul>";
 	    for (var i = 0; i < data.length; i++){

@@ -7,19 +7,32 @@
     <script src="../europeana_ww1.js"></script>
     </head>
   <body>
-    <div id="categories">
+    <!--div id="categories">
     </div>
-    <script>document.getElementById('categories').innerHTML = EWW1.list_categories();</script>
+    <script>document.getElementById('categories').innerHTML = EWW1.list_categories();</script-->
+
+    <!-- example of loading a category : pass the category as part of the URL using ?category=category_name e.g. file:///Users/mpciiljb/Documents/wwi-stories/test/story_view.html?category=Western+Front -->
     <div id="stories">
     </div>
-    <div id="full_story"></div>
+    <div id="full_story">      No category</div>
     <script>
-//     EWW1.query(EWW1.queries.full_record("http://www.europeana.eu/portal/record/2020601/838F4E54AFE60CA240F793819347402781BC1044.json"), EWW1.logResults);
-//      EWW1.query(EWW1.queries.full_record("http://www.europeana.eu/portal/record/2020601/838F4E54AFE60CA240F793819347402781BC1044.json"), EWW1.logResults);
-
-      EWW1.query(EWW1.queries.category_entries("Western Front", "stories_only"), EWW1.callbacks.map_stories, {full: true, context: {render_into: "stories", passthrough_callback: EWW1.callbacks.render_story_summary}});
-
-//      EWW1.query(EWW1.queries.story_entries("http://www.europeana1914-1918.eu/en/contributions/2787"), EWW1.logResults);
+      var href = location.href;
+      var full_story = document.getElementById('full_story');
+      if (href.match(/\?category=/)){
+        full_story.innerHTML = "";
+        var category = EWW1.decode(href.split("?category=")[1]);
+        category = category.replace(/\+/, " ");
+        EWW1.query(EWW1.queries.category_entries(category, "stories_only"), 
+                 EWW1.callbacks.map_stories, 
+                 {
+                   full: true, 
+                   context: {
+                     render_into: "stories", 
+                     passthrough_callback: EWW1.callbacks.render_story_summary
+                   }
+                 }
+                );
+      }
     </script>
     </body>
   </html>

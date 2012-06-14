@@ -156,12 +156,13 @@ var EWW1={
 
 	category_entries: function(category){
 	    var stories_part = arguments[1] ? "dc_type:story+" : "";
-	    return EWW1.query_parts.base + 
+	    var query = EWW1.query_parts.base + 
 	    EWW1.category_metadata_field(category) + ":" + 
 	    EWW1.format_for_query(category) + "+" +
 	    stories_part +
 	    EWW1.query_parts.ww1_collection + "&" + 
 	    EWW1.query_parts.key;
+	    return query;
 	},
 	
 	story_entries: function(story){

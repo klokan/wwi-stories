@@ -26,9 +26,53 @@ var EWW1={
     list_categories: function(){
 	var html = "<ul>";
 	for (var cat in this.categories){
-	    html+= "<li><a href='#'>" + cat + "</a></li>";
+	    html+= "<li><a href='#categories'>" + cat + "</a></li>";
 	}
 	return html + "</ul>";
+    },
+
+    //UI functions
+    visible_stories: {},
+
+    display_categories: function(){
+	document.getElementById("categories").style.display = "block";
+	document.getElementById("stories").style.display = "none";
+	document.getElementById("full_story").innerHTML = "";
+    },
+
+    display_stories: function(){
+	document.getElementById("categories").style.display = "none";
+	document.getElementById("stories").style.display = "block";
+	document.getElementById("full_story").innerHTML = "";
+	
+    },
+
+    display_full_story: function(id, element, hide){
+	hide = hide || [];
+	for (var i = 0; i < hide.length; i++){
+	    document.getElementById(hide[i]).style.display = "none";
+	}
+	
+	var html = "<a href='#stories' onClick='EWW1.display_stories()'>Back to stories</a>";
+	var story = EWW1.visible_stories[id].story;
+	var items = EWW1.visible_stories[id].story_items;
+	html += "<h1>" + story["dc:title"] + "</h1>";
+	html += "<h2>Contributor</h2>" + story["dc:contributor"];
+	html += "<h2>Additional Information</h2>" + story["dc:description"];
+	html += "<h2>Summary description of items</h2>" + story["dc:description"];
+	html += "<h2>Date created</h2>" + story["dc:date"];//dc:temporal
+	html += "<h2>Language</h2>" + story["dc:language"];
+	html += "<h2>Keywords</h2>" + story["dc:subject"];
+	html += "<h2>Theatres of War</h2>" + story["dc:coverage"];
+	html += "<p>";
+	for (var i = 0; i < items.length; i++){
+	    if (items[i].enclosure.match(/(jpg|bmp|png)/i)){
+		html += "<img src='" + EWW1.imageSize.thumb(items[i].enclosure) + "'>";
+	    }
+	}
+	html += "</p>";
+	console.log(element);
+	document.getElementById(element).innerHTML = html;
     },
 
     //API Query utility functions
@@ -49,7 +93,7 @@ var EWW1={
     },
 
     decode: function(str){
-	return decodeURI(str.replace(/^'(.*)'$/, "$1")).replace(/%3A/g, ":");
+	return decodeURI(str).replace(/%3A/g, ":");
     },
 
     format_for_query: function(str){
@@ -58,8 +102,14 @@ var EWW1={
 	else {return "'" + rawstr + "'";}
     },
 
-    returnedData: {
-	to: function(str, querytype){return str.replace(/\.[^\.]*$/, querytype);},
+    returnData: {
+	to: function(str, querytype){
+	    if (str.match(/\.(html|json|rss)$/i)){
+		return str.replace(/\.[^\.]*$/, querytype);
+	    } else {
+		return str + "." + querytype
+	    }
+	},
 	JSON: function(str){return this.to(str, "json");},
 	HTML: function(str){return this.to(str, "html");},
 	RSS: function(str){return this.to(str, "rss");}
@@ -120,6 +170,7 @@ var EWW1={
 	var ajax_options = {dataType: "jsonp", success: callback};
 
 	if(options.aggregator){
+	    console.log("aggregating");
 	    ajax_options.context = options.aggregator;
 	}
 	else {ajax_options.context = options.context}
@@ -150,6 +201,7 @@ var EWW1={
 
     Aggregator_methods: {
 	callback: function(data){
+	    data = data.items ? data : {items: [data]};
 	    this.results.push(data);
 	    this.itemsSoFar = this.results.length*data.itemsPerPage;
 	    if (data.totalResults < this.limit){this.limit = data.totalResults;}
@@ -200,17 +252,20 @@ var EWW1={
 
     callbacks: {
 	map_stories: function(data) {
+	    if (!data.items){data = {items: [data]};}
 	    console.log(data.items);
-
-	    var html = "<ul>";
-	    for (var i = 0; i < data.items.length; i++){
-		var story = EWW1.story_link(data.items[i]);
-		html += "<li id='" + story + "'>" + story + "</li>";
+	    if(this.render_into){
+		var stories = document.getElementById(options.render_into);
+		var html = "<ul>";
+		for (var i = 0; i < data.items.length; i++){
+		    var story = EWW1.story_link(data.items[i]);
+		    html += "<li id='" + story + "'>" + story + "</li>";
+		}
+		stories.innerHTML = html + "</ul>";
 	    }
-	    document.getElementById('block').innerHTML = html + "</ul>";
 	    for (var i = 0; i < data.items.length; i++){
 		var story = EWW1.story_link(data.items[i]);
-		EWW1.query(EWW1.queries.story_entries(story), this.map_callback, {full: this.full, context: data.items[i]});
+		EWW1.query(EWW1.queries.story_entries(story), this.passthrough_callback, {full: this.full, context: data.items[i]});
 	    }
 	},
 
@@ -230,14 +285,20 @@ var EWW1={
 		var uri = EWW1.imageSize.thumb(m.enclosure);
 	    } 
 	    else {uri = "http://www.europeana1914-1918.eu/images/style/icons/mimetypes/pdf.png?1325158438";}
-	    var full_story = "EWW1.queries.story_entries(" + this["europeana:uri"] + "), EWW1.callbacks.map_stories, {full: true, context: {map_callback: EWW1.callbacks.render_full_story}})";
+	    //	    var full_story = "EWW1.queries.story_entries(" + this["europeana:uri"] + "), EWW1.callbacks.map_stories, {full: true, context: {passthough_callback: EWW1.callbacks.render_full_story}})";
+	    var id = EWW1.story_link(this);
+	    var full_story = "EWW1.display_full_story(\"" + id + "\");";
 
-	    document.getElementById(EWW1.story_link(this)).innerHTML = "<a href='#block' onClick=''><img src='" + uri + "' alt='" + uri + "'></a><p>" + this["dc:title"] + "</p>" + "<p>" + this["dcterms:alternative"] + "</p>";
+	    var element = document.getElementById(id);
+	    element.innerHTML = "<a href='#stories' onClick='" + full_story + "'><img src='" + uri + "' alt='" + uri + "'></a><p>" + this["dc:title"] + "</p>" + "<p>" + this["dcterms:alternative"] + "</p>";
+	    EWW1.visible_stories[id] = {story: this, story_items: data.items};
 
 	},
 
 	render_full_story: function(data) {
-	    
+	    //todo: replace "full_story" with customisable id
+	    EWW1.visible_stories["full_story"] = {story: this, story_items: data.items};
+	    EWW1.display_full_story("full_story", "full_story");
 	},
 
 	thumbs: function(data) {

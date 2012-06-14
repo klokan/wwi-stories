@@ -5,28 +5,28 @@ var EWW1={
 
     //todo: check these all give same numbers as categories on web front end
     categories: {
-	"Western Front": "dc_coverage",
-	"Eastern Front": "dc_coverage",
-	"Italian Front": "dc_coverage",
-	"Home Front": "dc_coverage",
-	"Trench Life": "dc_subject",
-	"Aerial Warfare": "dc_subject",
-	"Naval Warfare": "dc_subject",
-	"Prisoners of War": "dc_subject",
-	"Propaganda": "dc_subject",
-	"Remembrance": "dc_subject",
-	"Women": "dc_subject",
-	"Official Documents": "dc_subject",
-	"Photograph": "dc_subject",
-	"Postcards": "dc_subject",
-	"Diaries": "dc_subject",
-	"Letters": "dc_type"
+	"Western Front": {meta: "dc_coverage", image: "http://4.bp.blogspot.com/-c7UBIGqWYvs/T6eI0uiEyAI/AAAAAAAAAFQ/Tu_EhycGoI4/s400/Western-Front.png"},
+	"Eastern Front": {meta: "dc_coverage", image: "http://3.bp.blogspot.com/-N_Dj07JXaAA/T6eBnvzDaXI/AAAAAAAAACc/38uB8W8_JfU/s400/Eastern-Front.png"},
+	"Italian Front": {meta: "dc_coverage", image: "http://3.bp.blogspot.com/-bC2Vb214u9Q/T6eErG2VMnI/AAAAAAAAADY/rENihcJ-86o/s400/Italian-Front.png"},
+	"Home Front": {meta: "dc_coverage", image: "http://3.bp.blogspot.com/-_M0atLcPEsE/T6eEKNu5OJI/AAAAAAAAADA/mTDXWZ4D0l4/s400/Home-Front.png"},
+	"Trench Life": {meta: "dc_subject", image: "http://2.bp.blogspot.com/-GnAQiaZRtFs/T6eA80jxX_I/AAAAAAAAACQ/szYr90F2avA/s400/Trench-Life.png"},
+	"Aerial Warfare": {meta: "dc_subject", image: "http://2.bp.blogspot.com/-xj6OWxD_BGo/T6eDhhc-HDI/AAAAAAAAAC0/Feq4ZZHryfM/s400/Aerial-Warfare.png"},
+	"Naval Warfare": {meta: "dc_subject", image: "http://1.bp.blogspot.com/-JZrxu8DTQNg/T6eFbsGRrRI/AAAAAAAAADw/qlsSj5HulxM/s400/Naval-Warfare.png"},
+	"Prisoners of War": {meta: "dc_subject", image: "http://2.bp.blogspot.com/-qCq9O3ld0k8/T6eZJHDcL4I/AAAAAAAAAFg/V29lCFNTK80/s400/Prisoners-of-War.png"},
+	"Propaganda": {meta: "dc_subject", image: "http://3.bp.blogspot.com/-tmLXikVpz3U/T6eHaOmlDNI/AAAAAAAAAEs/pmf2IIOig5A/s400/Propaganda.png"},
+	"Remembrance": {meta: "dc_subject", image: "http://4.bp.blogspot.com/-USCw8Rv7dBI/T6eH89x3J4I/AAAAAAAAAE4/OPd1A1RYY6o/s400/Remembrance.png"},
+	"Women": {meta: "dc_subject", image: "http://1.bp.blogspot.com/-2oktvtwOH5U/T6eIX6mkK8I/AAAAAAAAAFE/IXihuifiwQE/s400/Women.png"},
+	"Official Documents": {meta: "dc_subject", image: "http://1.bp.blogspot.com/-vUwXf9SG61k/T6eF9fv6e6I/AAAAAAAAAD8/o98TGxOmzkg/s400/Official-Documents.png"},
+	"Photograph": {meta: "dc_subject", image: "http://2.bp.blogspot.com/-0wfJBIv7BP0/T6eGWG-Y56I/AAAAAAAAAEI/hHUE9IWrR0A/s400/Photographs.png"},
+	"Postcards": {meta: "dc_subject", image: "http://4.bp.blogspot.com/-ROdrZTxsIY0/T6eGnh_QGEI/AAAAAAAAAEU/Ph9mxtCckzs/s400/Postcards.png"},
+	"Diaries": {meta: "dc_subject", image: "http://2.bp.blogspot.com/-XrtopQBYg4Y/T6eCPPccSDI/AAAAAAAAACo/frimwbe_p7s/s400/Diaries.png"},
+	"Letters": {meta: "dc_type", image: "http://4.bp.blogspot.com/-tvrk_OjtN2M/T6eFINNSKMI/AAAAAAAAADk/AMTnZnkWMjY/s400/Letters.png"},
     },
 
     list_categories: function(){
 	var html = "<ul>";
 	for (var cat in this.categories){
-	    html+= "<li><a href='#categories'>" + cat + "</a></li>";
+	    html+= "<li><a href='#categories'><img src='" + this.categories[cat].image + "'/><br/>" + cat + "</a></li>";
 	}
 	return html + "</ul>";
     },
@@ -88,7 +88,7 @@ var EWW1={
     },
 
     category_metadata_field: function(category){
-	return this.categories[category];
+	return this.categories[category].meta;
     },
 
     decode: function(str){

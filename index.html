@@ -1,0 +1,345 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+		<title>World War I Stories</title>
+		<meta charset="utf-8">
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+		<link rel="stylesheet"  href="css/themes/default/jquery.mobile.css" />
+		<link href="jquery-mobile.css" type="text/css" rel="stylesheet" />
+		<link href="photoswipe.css" type="text/css" rel="stylesheet" />
+		
+		<script src="js/jquery.js"></script>
+		<script type="text/javascript">
+		    $(document).bind("mobileinit", function(){
+		        $.mobile.page.prototype.options.addBackBtn= true;
+		    });
+		</script>
+		<script src="js/jquery.mobile.js"></script>
+		<script type="text/javascript" src="klass.min.js"></script>
+		<script type="text/javascript" src="code.photoswipe.jquery-3.0.4.min.js"></script>
+		<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
+		<script type="text/javascript">
+			/*
+			 * IMPORTANT!!!
+			 * REMEMBER TO ADD  rel="external"  to your anchor tags. 
+			 * If you don't this will mess with how jQuery Mobile works
+			 */
+			(function(window, $, PhotoSwipe){
+				$(document).ready(function(){
+					$('div.gallery-page')
+						.live('pageshow', function(e){
+							var 
+								currentPage = $(e.target),
+								options = {},
+								photoSwipeInstance = $("ul.gallery a", e.target).photoSwipe(options,  currentPage.attr('id'));
+							return true;
+						})
+						.live('pagehide', function(e){
+							var 
+								currentPage = $(e.target),
+								photoSwipeInstance = PhotoSwipe.getInstance(currentPage.attr('id'));
+							if (typeof photoSwipeInstance != "undefined" && photoSwipeInstance != null) {
+								PhotoSwipe.detatch(photoSwipeInstance);
+							}
+							return true;
+						});
+				});
+			}(window, window.jQuery, window.Code.PhotoSwipe));
+
+/*
+			$('#your-page-id').live("pageshow", function() {
+			      $('#map_canvas').gmap('refresh');
+			});
+*/
+		</script>
+		
+	</head> 
+  <style type="text/css" media="screen">
+	.frontbottom * { opacity: 0.85; text-align: center; }
+	html, body {
+		height: 100%;
+		background: url(wwibackground.jpg) no-repeat center center fixed;
+		-webkit-background-sizeze: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+	.ui-body-c, .ui-overlay-c { 
+		background: transparent;
+	}
+	.ui-btn-up-c {
+		opacity: 0.70;
+	}
+
+  </style>
+	<body>
+		
+<!-- Start of first page: #home -->
+<div data-role="page" id="home">
+
+	<div data-role="header">
+		<h1>WWI Stories</h1>
+	</div>
+
+	<div data-role="content">
+		<h2 style="text-align:center;">Personal stories from the First World War</h2>
+
+		<p style="font-size:small;text-align:center;">Short introduction text. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.</p>
+	
+		<div class="frontbottom">
+		<!-- <h3>Show internal pages:</h3> -->
+		<a href="#featured" data-role="button" data-transition="slide">Featured / Random</a>
+		<!-- <a href="#random" data-role="button" data-transition="slide">Random</a> -->
+		<a href="#categories" data-role="button" data-transition="slide">Categories</a>
+		<a href="#map" data-role="button" data-transition="slide">Map</a>
+		<a href="#search" data-role="button" data-icon="search" data-theme="b" data-transition="slide">Search</a>
+		<!-- <a href="#submit" data-role="button" data-rel="dialog" data-transition="pop">Submit your story</a> -->
+		</div>
+		<div style="text-align:center; font-size:small;"><a href="#about">About this app</a></div>
+		
+	</div><!-- /content -->
+
+</div><!-- /page one -->
+
+
+<!-- Start of second page: #featured -->
+<div data-role="page" id="featured" data-add-back-btn="true">
+
+	<div data-role="header" data-position="fixed">
+		<h1>Featured</h1>
+	<!-- 	<a href="#home" data-icon="home" data-iconpos="notext" data-transition="slide" data-direction="reverse">Home</a> -->
+	</div><!-- /header -->
+
+	<div data-role="content">
+	
+	<ul data-role="listview">
+		<li><a href="#story?id=369ECFFC4514E6BBE638CCD79B0FAB036692FFF8" data-transition="slide">
+			<img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" style="width:80px; height:80px;" />
+			<h3>The Bible that saved a life</h3>
+			<p>My father served in the first world war as a soldier ...</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" style="width:80px; height:80px;" />
+			<h3>Warning</h3>
+			<p>Hot Chip</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" />
+			<h3>Wolfgang Amadeus Phoenix</h3>
+			<p>Phoenix</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="images/album-ok.jpg" />
+			<h3>Of The Blue Colour Of The Sky</h3>
+			<p>Ok Go</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="images/album-ws.jpg" />
+			<h3>Elephant</h3>
+			<p>The White Stripes</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="images/album-rh.jpg" />
+			<h3>Kid A</h3>
+			<p>Radiohead</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="images/album-xx.jpg" />
+			<h3>XX</h3>
+			<p>XX</p>
+		</a></li>
+		<li><a href="index.html">
+			<img src="images/album-mg.jpg" />
+			<h3>Congratulations</h3>
+			<p>MGMT</p>
+		</a></li>
+
+		<li><a href="index.html">
+			<img src="images/album-ag.jpg" />
+			<h3>Ashes Grammar</h3>
+			<p>A Sunny Day in Glasgow</p>
+		</a></li>
+
+		<li><a href="index.html">
+			<img src="images/album-k.jpg" />
+			<h3>Hot Fuss</h3>
+			<p>Killers</p>
+		</a></li>
+		<li><a href="index.html">	
+			<img src="images/album-af.jpg" />
+			<h3>The Suburbs</h3>
+			<p>Arcade Fire</p>
+		</a></li>
+	</ul>
+	</div><!-- /content -->
+
+</div><!-- /page featured -->
+
+<!-- Start of second page: #story -->
+<div data-role="page" id="story" data-add-back-btn="true">
+
+	<div data-role="header" data-position="fixed">
+		<h1>Story</h1>
+		<a href="#view?id=369ECFFC4514E6BBE638CCD79B0FAB036692FFF8" data-theme="b" data-icon="grid" class="ui-btn-right">Images</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<h2>A story page</h2>
+		<a href="#view?id=369ECFFC4514E6BBE638CCD79B0FAB036692FFF8"><img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" alt="" style="float:right;"></a>
+		</p>
+		<p>
+		Beiträger
+		</p>
+		<p>
+		Prof. Dr. Gottfried Geiler
+	</p>
+	<p>
+		Additional information
+	</p>
+	<p>
+		comment on the sent FotoMein father fell in the first world war as a soldier of the infantry in the heavy fighting before Verdun. In a wonderful way, he was saved by his Bible, which he wore as a pious Christian times and laid while sleeping in the shelter under his head. When a grenade struck up and smashed the shelter, many of his comrades were wounded or killed. An approximately 4 cm large shrapnel shredded the Bible under his head, beat by them but not completely, so that my father remained unharmed in life.The Bible, a precious, preserved in the family souvenir, very real his salvation to life was.
+	</p>
+		<p>
+		Date created
+	</p>
+		<p>
+		1917
+	</p>
+		<p>
+		Language
+	</p>
+		<p>
+		Deutsch
+	</p>
+		<p>
+		Keywords
+	</p>
+		<p>
+		Artillery
+		Theatres of War
+		Western Front
+	</p>
+		<p>
+		Keywords: Forces
+		Central Powers
+		</p>
+		<a href="#view" data-role="button" data-theme="b" data-icon="grid" data-transition="slide">View images</a>
+		
+		
+	</div><!-- /content -->
+
+</div><!-- /page detail -->
+
+<!-- Start of second page: #view -->
+<div data-role="page" id="view" data-add-back-btn="true" class="gallery-page">
+
+	<div data-role="header" data-position="fixed">
+		<h1>View</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		
+		<ul class="gallery">
+			<li><a href="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.medium.jpg" rel="external"><img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" alt="Image 001" /></a></li>
+			<li><a href="http://www.europeana1914-1918.eu/attachments/21172/1817.21172.medium.jpg" rel="external"><img src="http://www.europeana1914-1918.eu/attachments/21172/1817.21172.preview.jpg" alt="Image 002" /></a></li>
+			<li><a href="http://www.europeana1914-1918.eu/attachments/21172/1817.21173.medium.jpg" rel="external"><img src="http://www.europeana1914-1918.eu/attachments/21172/1817.21173.preview.jpg" alt="Image 003" /></a></li>
+			<li><a href="http://www.europeana1914-1918.eu/attachments/21172/1817.21174.medium.jpg" rel="external"><img src="http://www.europeana1914-1918.eu/attachments/21172/1817.21174.preview.jpg" alt="Image 004" /></a></li>
+		</ul>
+<!--
+		http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg
+		http://www.europeana1914-1918.eu/attachments/21172/1817.21172.preview.jpg
+		http://www.europeana1914-1918.eu/attachments/21172/1817.21173.preview.jpg
+		http://www.europeana1914-1918.eu/attachments/21172/1817.21174.preview.jpg
+-->		
+	</div><!-- /content -->
+
+</div><!-- /page view -->
+
+
+
+<!-- Start of second page: #map -->
+<div data-role="page" id="map" data-add-back-btn="true">
+
+	<div data-role="header" data-position="fixed">
+		<h1>Search</h1>
+	</div><!-- /header -->
+	<div id="map_canvas" style="position: absolute; top:40px; left:0px; bottom:0px;right:0px;" data-role="content">
+		<script type="text/javascript" charset="utf-8">
+		/*
+			var map;
+			var brooklyn = new google.maps.LatLng(40.6743890, -73.9455);
+			var stylez = [
+			    {
+			      featureType: "all",
+			      elementType: "all",
+			      stylers: [
+			        { saturation: -100 } 
+			      ]
+			    }
+			];
+			var mapOptions = {
+			    zoom: 11,
+			    center: brooklyn,
+			    mapTypeControlOptions: {
+			         mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'gray']
+			    }
+			};
+			map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+			var mapType = new google.maps.StyledMapType(stylez, { name:"Grayscale" });    
+			map.mapTypes.set('gray', mapType);
+			map.setMapTypeId('gray');
+		*/
+		</script>
+	</div><!-- /content -->
+
+</div><!-- /page map -->
+
+
+<!-- Start of second page: #search -->
+<div data-role="page" id="search" data-add-back-btn="true">
+
+	<div data-role="header" data-position="fixed">
+		<h1>Search</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<form action="form.php" method="post">
+		<input type="search" name="search" id="search-basic" value="" placeholder="Search..." />
+		</form>
+		<!-- $('.mySearchInput').textinput(); -->
+		<!-- 
+		<ul data-role="listview" data-filter="true" data-filter-placeholder="Search.." >
+			<li><img alt="" class="ui-li-icon" src="assets/images/ajax-loader.gif" />Loading..</li>
+		</ul>
+		-->
+	</div><!-- /content -->
+
+</div><!-- /page search -->
+
+
+<!-- Start of third page: #about -->
+<div data-role="page" id="about">
+
+	<div data-role="header" data-theme="e">
+		<h1>About</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">	
+		<h2>Credits</h2>
+		<ul>
+		<li>Petr Pridal - Klokan Technologies GmbH</li>
+		</ul>
+		<h2>About</h2>
+		<p>This mobile application has been created during three days of the Hack4Europe hackathon in Leuven, Belgium in 13-15 June 2012. The displayed stories were collected from the general public in the <a href="www.europeana1914-1918.eu">Europeana 1914-1918 project</a>. All data are CC-BY</p>		
+		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
+		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
+	</div><!-- /content -->
+
+</div><!-- /page about -->
+
+		
+	</body>
+</html>
+

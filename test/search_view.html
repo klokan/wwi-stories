@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Europeana API Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="../europeana_ww1.js"></script>
+    </head>
+  <body>
+    <form>
+      <input type="text" id="searchbox" name="searchbox"/><br/>
+      <input type="button" value="Search" onClick="EWW1.query(EWW1.queries.search(this.form.searchbox.value), EWW1.callbacks.summary_info)"/>
+    <div id="stories">
+    </div>
+    <div id="full_story"></div>
+    </body>
+  </html>

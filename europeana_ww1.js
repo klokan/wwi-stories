@@ -130,6 +130,14 @@ var EWW1={
 	    return record + "?" + EWW1.query_parts.key;
 	},
 
+	search: function(keyword){
+	    var search = EWW1.query_parts.base + keyword + "+" +
+	    EWW1.query_parts.ww1_collection + "&" + 
+	    EWW1.query_parts.key;
+	    console.log("issuing " +search);
+	    return search;
+	},
+
 	page: function(query,page){
 	    if(!query.match(/&wskey=/)) {query = query + "&" + EWW1.query_parts.key;}
 	    var start = "&startPage=" + page;
@@ -300,12 +308,16 @@ var EWW1={
 	    EWW1.display_full_story("full_story", "full_story");
 	},
 
-	thumbs: function(data) {
+	summary_info: function(data) {
+	    console.log(data);
 	    var html = "<ul>";
-	    for (var i = 0; i < data.length; i++){
-		html += "<li><img src='" + data[i]["euroopeana:isShownBy"] + "'/></li>";
+	    for (var i = 0; i < data.items.length; i++){
+		var item = data.items[i];
+		var uri = EWW1.imageSize.thumb(item.enclosure);
+		html += "<li><img src='" + uri + "'/><br/>" + item.title + "</li>";
 	    }
-	    console.log(html);
+	    var element = document.getElementById('stories');
+	    element.innerHTML = html + "</ul>";
 	},
 
 	logResults: function( data ) {

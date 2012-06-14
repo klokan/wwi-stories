@@ -127,7 +127,16 @@ var EWW1={
 
     queries: {
 	full_record: function(record){
-	    return record + "?" + EWW1.query_parts.key;
+	    if(!record.match(/\?wskey=/)) {record = record + "?" + EWW1.query_parts.key;}
+	    return record;
+	},
+
+	all_stories: function(){
+	    var search = EWW1.query_parts.base + "dc_type:story+" +
+	    EWW1.query_parts.ww1_collection + "&" + 
+	    EWW1.query_parts.key;
+	    console.log("issuing " +search);
+	    return search;
 	},
 
 	search: function(keyword){
@@ -320,6 +329,17 @@ var EWW1={
 	    element.innerHTML = html + "</ul>";
 	},
 
+	random_page: function(data){
+	    var page = Math.floor(Math.random() * Math.ceil(data.totalResults/data.itemsPerPage) );
+	    EWW1.query(EWW1.queries.page(data.link,page), EWW1.callbacks.random_result);
+	},
+
+	random_result: function(data){
+	    var result = Math.floor(Math.random() * data.itemsPerPage);
+	    var result_record = data.items[result].link;
+	    EWW1.query(EWW1.queries.full_record(result_record), EWW1.callbacks.map_stories, {context: {passthrough_callback: EWW1.callbacks.render_full_story, passthrough_into: "full_story"}});
+	},
+
 	logResults: function( data ) {
 	    if ( window.console && console.log ) {
 		if ( data ) {
@@ -329,19 +349,6 @@ var EWW1={
 		    }
 		}
 	    }
-	},
-
-	random_page: function(data){
-	    var page = Math.floor(Math.rand(Math.ceil(data.totalResults/data.itemsPerPage)));
-	    this.query(this.queries.page(data.link,page), this.random_result)
-	},
-
-	random_result: function(data){
-	    var result = Math.floor(Math.rand(data.itemsPerPage));
-	    var result_record = data.items[result].guid;
-	    this.query(this.queries.full_record(result_record), this.logResults);
 	}
-
     }
-
 };

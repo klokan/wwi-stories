@@ -20,6 +20,8 @@
 		<script type="text/javascript" src="klass.min.js"></script>
 		<script type="text/javascript" src="code.photoswipe.jquery-3.0.4.min.js"></script>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script src="europeana_ww1.js"></script>
+		<script src="index.js"></script>
 		<script type="text/javascript">
 			/*
 			 * IMPORTANT!!!
@@ -48,48 +50,6 @@
 				});
 			}(window, window.jQuery, window.Code.PhotoSwipe));
 
-/*
-			$('#your-page-id').live("pageshow", function() {
-			      $('#map_canvas').gmap('refresh');
-			});
-*/
-
-// MAP
-
-var map;
-
-function map_initialize () {
-	var brooklyn = new google.maps.LatLng(40.6743890, -73.9455);
-	var stylez = [
-	    {
-	      featureType: "all",
-	      elementType: "all",
-	      stylers: [
-	        { saturation: -100 } 
-	      ]
-	    }
-	];
-	var mapOptions = {
-	    zoom: 11,
-	    center: brooklyn,
-	    mapTypeControl: false,
-	    scaleControl: false,
-	    streetViewControl: false,
-	    overviewMapControl: false
-	};
-	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-	var mapType = new google.maps.StyledMapType(stylez, { name:"Grayscale" });    
-	map.mapTypes.set('gray', mapType);
-	map.setMapTypeId('gray');
-}
-
-$('#map').live("pageshow", function() {
-	if (map == null) {
-		map_initialize();
-	} else {
-		google.maps.event.trigger(map, 'resize');
-	}
-});
 	</script>
 		
 	</head> 
@@ -152,7 +112,7 @@ $('#map').live("pageshow", function() {
 	<div data-role="content">
 	
 	<ul data-role="listview">
-		<li><a href="#story?id=369ECFFC4514E6BBE638CCD79B0FAB036692FFF8" data-transition="slide">
+		<li><a href="#story?id=2020601-369ECFFC4514E6BBE638CCD79B0FAB036692FFF8" data-transition="slide">
 			<img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" style="width:80px; height:80px;" />
 			<h3>The Bible that saved a life</h3>
 			<p>My father served in the first world war as a soldier ...</p>
@@ -223,6 +183,8 @@ $('#map').live("pageshow", function() {
 	</div><!-- /header -->
 
 	<div data-role="content">
+		<div id="story-content"></div>
+		<div id="full_story"></div>
 		<h2>A story page</h2>
 		<a href="#view?id=369ECFFC4514E6BBE638CCD79B0FAB036692FFF8"><img src="http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg" alt="" style="float:right;"></a>
 		</p>
@@ -284,12 +246,7 @@ $('#map').live("pageshow", function() {
 			<li><a href="http://www.europeana1914-1918.eu/attachments/21172/1817.21173.medium.jpg" rel="external"><img src="http://www.europeana1914-1918.eu/attachments/21172/1817.21173.preview.jpg" alt="Image 003" /></a></li>
 			<li><a href="http://www.europeana1914-1918.eu/attachments/21172/1817.21174.medium.jpg" rel="external"><img src="http://www.europeana1914-1918.eu/attachments/21172/1817.21174.preview.jpg" alt="Image 004" /></a></li>
 		</ul>
-<!--
-		http://www.europeana1914-1918.eu/attachments/21171/1817.21171.preview.jpg
-		http://www.europeana1914-1918.eu/attachments/21172/1817.21172.preview.jpg
-		http://www.europeana1914-1918.eu/attachments/21172/1817.21173.preview.jpg
-		http://www.europeana1914-1918.eu/attachments/21172/1817.21174.preview.jpg
--->		
+
 	</div><!-- /content -->
 
 </div><!-- /page view -->
@@ -341,6 +298,7 @@ $('#map').live("pageshow", function() {
 		<h2>Credits</h2>
 		<ul>
 		<li>Petr Pridal - Klokan Technologies GmbH</li>
+		<li>Lee Pridal - Klokan Technologies GmbH</li>
 		</ul>
 		<h2>About</h2>
 		<p>This mobile application has been created during three days of the Hack4Europe hackathon in Leuven, Belgium in 13-15 June 2012. The displayed stories were collected from the general public in the <a href="www.europeana1914-1918.eu">Europeana 1914-1918 project</a>. All data are CC-BY</p>		

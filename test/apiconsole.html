@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Europeana API Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="../europeana_ww1.js"></script>
+    </head>
+  <body>    
+    see console ...
+    <script>
+//     EWW1.query(EWW1.queries.full_record("http://www.europeana.eu/portal/record/2020601/838F4E54AFE60CA240F793819347402781BC1044.json"), EWW1.logResults);
+//      EWW1.query(EWW1.queries.full_record("http://www.europeana.eu/portal/record/2020601/838F4E54AFE60CA240F793819347402781BC1044.json"), EWW1.logResults);
+//      EWW1.query(EWW1.queries.story_entries("http://www.europeana1914-1918.eu/en/contributions/2787"), EWW1.logResults);
+      var category_data;
+      function populate_category_data(data){
+        category_data = data;
+        category_data.api_collect(item.story_items);
+      }
+
+      EWW1.query(EWW1.queries.category_entries("Western Front", "stories_only"), populate_category_data, {limit: 50});
+    </script>
+    <!--script src="http://api.europeana.eu/api/opensearch.json?searchTerms=dc_relation:'http://www.europeana1914-1918.eu/en/contributions/2787'+europeana_collectionName:2020601_Ag_ErsterWeltkrieg_EU&wskey=ZICPOGYUWT&callback=EWW1.logResults"></script-->
+    </body>
+  </html>

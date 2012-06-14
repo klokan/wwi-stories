@@ -71,7 +71,6 @@ var EWW1={
 	    }
 	}
 	html += "</p>";
-	console.log(element);
 	document.getElementById(element).innerHTML = html;
     },
 
@@ -253,9 +252,9 @@ var EWW1={
     callbacks: {
 	map_stories: function(data) {
 	    if (!data.items){data = {items: [data]};}
-	    console.log(data.items);
+	    //	    console.log(data.items);
 	    if(this.render_into){
-		var stories = document.getElementById(options.render_into);
+		var stories = document.getElementById(this.render_into);
 		var html = "<ul>";
 		for (var i = 0; i < data.items.length; i++){
 		    var story = EWW1.story_link(data.items[i]);
@@ -287,7 +286,7 @@ var EWW1={
 	    else {uri = "http://www.europeana1914-1918.eu/images/style/icons/mimetypes/pdf.png?1325158438";}
 	    //	    var full_story = "EWW1.queries.story_entries(" + this["europeana:uri"] + "), EWW1.callbacks.map_stories, {full: true, context: {passthough_callback: EWW1.callbacks.render_full_story}})";
 	    var id = EWW1.story_link(this);
-	    var full_story = "EWW1.display_full_story(\"" + id + "\");";
+	    var full_story = "EWW1.display_full_story(\"" + id + "\", \"full_story\", [\"categories\", \"stories\"]);";
 
 	    var element = document.getElementById(id);
 	    element.innerHTML = "<a href='#stories' onClick='" + full_story + "'><img src='" + uri + "' alt='" + uri + "'></a><p>" + this["dc:title"] + "</p>" + "<p>" + this["dcterms:alternative"] + "</p>";

@@ -6,10 +6,12 @@ function getParameterByName(name, inputstring) {
         ips = inputstring;
     var match = RegExp('[?&]' + name + '=([^&]*)').exec(ips);
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-
 }
 
+$('#story').live("pageshow", function() {
 
+
+/*
 //laod article for selected id
 $('div[data-url*="view.htm?id"]').live("pageshow", function () {
 
@@ -214,3 +216,4 @@ $('div[id="recent"]').live("pageshow", function () {
     });
 
 });
+*/

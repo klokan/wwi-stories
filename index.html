@@ -19,7 +19,7 @@
 		<script src="js/jquery.mobile.js"></script>
 		<script type="text/javascript" src="klass.min.js"></script>
 		<script type="text/javascript" src="code.photoswipe.jquery-3.0.4.min.js"></script>
-		<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript">
 			/*
 			 * IMPORTANT!!!
@@ -53,7 +53,44 @@
 			      $('#map_canvas').gmap('refresh');
 			});
 */
-		</script>
+
+// MAP
+
+var map;
+
+function map_initialize () {
+	var brooklyn = new google.maps.LatLng(40.6743890, -73.9455);
+	var stylez = [
+	    {
+	      featureType: "all",
+	      elementType: "all",
+	      stylers: [
+	        { saturation: -100 } 
+	      ]
+	    }
+	];
+	var mapOptions = {
+	    zoom: 11,
+	    center: brooklyn,
+	    mapTypeControl: false,
+	    scaleControl: false,
+	    streetViewControl: false,
+	    overviewMapControl: false
+	};
+	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+	var mapType = new google.maps.StyledMapType(stylez, { name:"Grayscale" });    
+	map.mapTypes.set('gray', mapType);
+	map.setMapTypeId('gray');
+}
+
+$('#map').live("pageshow", function() {
+	if (map == null) {
+		map_initialize();
+	} else {
+		google.maps.event.trigger(map, 'resize');
+	}
+});
+	</script>
 		
 	</head> 
   <style type="text/css" media="screen">
@@ -266,32 +303,6 @@
 		<h1>Search</h1>
 	</div><!-- /header -->
 	<div id="map_canvas" style="position: absolute; top:40px; left:0px; bottom:0px;right:0px;" data-role="content">
-		<script type="text/javascript" charset="utf-8">
-		/*
-			var map;
-			var brooklyn = new google.maps.LatLng(40.6743890, -73.9455);
-			var stylez = [
-			    {
-			      featureType: "all",
-			      elementType: "all",
-			      stylers: [
-			        { saturation: -100 } 
-			      ]
-			    }
-			];
-			var mapOptions = {
-			    zoom: 11,
-			    center: brooklyn,
-			    mapTypeControlOptions: {
-			         mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'gray']
-			    }
-			};
-			map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-			var mapType = new google.maps.StyledMapType(stylez, { name:"Grayscale" });    
-			map.mapTypes.set('gray', mapType);
-			map.setMapTypeId('gray');
-		*/
-		</script>
 	</div><!-- /content -->
 
 </div><!-- /page map -->

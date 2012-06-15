@@ -68,7 +68,7 @@ var EWW1={
 		//		html += "<img src='" + EWW1.imageSize.thumb(items[i].enclosure) + "'>";
 		//?id=\"" + items[i].link + "\">
 		//				html += "<a href='#view><img src=" + EWW1.imageSize.preview(items[i].enclosure) + " alt=\"\" style=\"float:right;\"></a>";
-				html += "<img src=" + EWW1.imageSize.preview(items[i].enclosure) + " alt=\"\" style=\"float:right;\">";
+	    html += "<img src=" + EWW1.imageSize.thumb(items[i].enclosure) + " alt=\"\" style=\"float:right;\">";
 		break;
 		//}
 	}
@@ -84,6 +84,19 @@ var EWW1={
 	html += "<h4>Theatres of War</h4><p>" + story["dc:coverage"] + "</p>";
 
 	document.getElementById(element).innerHTML = html;
+
+	var imagehtml;
+	//now do the images -- currently hard-coded
+	for (var i = 0; i < items.length; i++){
+	    //	    if (items[i].enclosure.match(/(jpg|bmp|png)/i)){
+		imagehtml = "<li><a href=\"";
+		imagehtml += EWW1.imageSize.preview(items[i].enclosure);
+		imagehtml += "rel=\"external\"><img src=\"";
+		imagehtml += EWW1.imageSize.preview(items[i].enclosure);
+		imagehtml += "\" alt=\"Image " + i + "\" /></a></li>";
+		//}
+	}
+	document.getElementById("view_images").innerHTML = imagehtml;
     },
 
     //API Query utility functions

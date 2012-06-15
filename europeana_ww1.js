@@ -26,12 +26,14 @@ var EWW1={
     list_categories: function(){
 	var html = "<ul>";
 	for (var cat in this.categories){
-	    html+= "<li><a href='#categories'><img src='" + this.categories[cat].image + "'/><br/>" + cat + "</a></li>";
+	    html+= "<li><a href='#category?id=" + cat.replace(/ /g, "+") + "'><img src='" + this.categories[cat].image.replace(/.*\//, "") + "'/><h3>" + cat + "</h3></a></li>";
 	}
+	console.log(html + "</ul>");
 	return html + "</ul>";
     },
 
     category_metadata_field: function(category){
+	//	console.log(category);
 	return this.categories[category].meta;
     },
 
@@ -57,24 +59,30 @@ var EWW1={
 	    document.getElementById(hide[i]).style.display = "none";
 	}
 	
-	var html = "<a href='#stories' onClick='EWW1.display_stories()'>Back to stories</a>";
+	var html = ""//<a href='#stories' onClick='EWW1.display_stories()'>Back to stories</a>";
 	var story = EWW1.visible_stories[id].story;
 	var items = EWW1.visible_stories[id].story_items;
-	html += "<h1>" + story["dc:title"] + "</h1>";
-	html += "<h2>Contributor</h2>" + story["dc:contributor"];
-	html += "<h2>Additional Information</h2>" + story["dc:description"];
-	html += "<h2>Summary description of items</h2>" + story["dc:description"];
-	html += "<h2>Date created</h2>" + story["dc:date"];//dc:temporal
-	html += "<h2>Language</h2>" + story["dc:language"];
-	html += "<h2>Keywords</h2>" + story["dc:subject"];
-	html += "<h2>Theatres of War</h2>" + story["dc:coverage"];
-	html += "<p>";
+
 	for (var i = 0; i < items.length; i++){
-	    if (items[i].enclosure.match(/(jpg|bmp|png)/i)){
-		html += "<img src='" + EWW1.imageSize.thumb(items[i].enclosure) + "'>";
-	    }
+	    //	    if (items[i].enclosure.match(/(jpg|bmp|png)/i)){
+		//		html += "<img src='" + EWW1.imageSize.thumb(items[i].enclosure) + "'>";
+		//?id=\"" + items[i].link + "\">
+		//				html += "<a href='#view><img src=" + EWW1.imageSize.preview(items[i].enclosure) + " alt=\"\" style=\"float:right;\"></a>";
+				html += "<img src=" + EWW1.imageSize.preview(items[i].enclosure) + " alt=\"\" style=\"float:right;\">";
+		break;
+		//}
 	}
-	html += "</p>";
+
+	html += "<h3>" + story["dc:title"] + "</h3>";
+	//	html += "<>Contributor</h2>" + story["dc:contributor"];
+	html += "<p>" + story["dc:contributor"] + "</p>";
+	html += "<h4>Additional Information</h4><p>" + story["dc:description"] + "</p>";
+	//	html += "<h2>Summary description of items</h2>" + story["dc:description"];
+	html += "<h4>Date created</h4><p>" + story["dc:date"] + "</p>";//dc:temporal
+	html += "<h4>Language</h4><p>" + story["dc:language"] + "</p>";
+	html += "<h4>Keywords</h4><p>" + story["dc:subject"] +"</p>";
+	html += "<h4>Theatres of War</h4><p>" + story["dc:coverage"] + "</p>";
+
 	document.getElementById(element).innerHTML = html;
     },
 
@@ -122,6 +130,7 @@ var EWW1={
 	    return str.replace(/\.[^\.]*.(jpg|bmp|pdf)$/i, "." + size + ".$1");},
 	full: function(str){return this.to(str, "full");},
 	thumb: function(str){return this.to(str, "thumb");},
+	preview: function(str){return this.to(str, "preview");},
 	original: function(str){return this.to(str, "original");},
 	medium: function(str){return this.to(str, "medium");}
     },
@@ -303,7 +312,7 @@ var EWW1={
     callbacks: {
 	map_stories: function(data) {
 	    if (!data.items){data = {items: [data]};}
-	    //	    console.log(data.items);
+	   	    console.log(data.items);
 	    if(this.render_into){
 		var stories = document.getElementById(this.render_into);
 		var html = "<ul>";
@@ -337,7 +346,7 @@ var EWW1={
 	    else {uri = "http://www.europeana1914-1918.eu/images/style/icons/mimetypes/pdf.png?1325158438";}
 	    //	    var full_story = "EWW1.queries.story_entries(" + this["europeana:uri"] + "), EWW1.callbacks.map_stories, {full: true, context: {passthough_callback: EWW1.callbacks.render_full_story}})";
 	    var id = EWW1.story_link(this);
-	    var full_story = "EWW1.display_full_story(\"" + id + "\", \"full_story\", [\"categories\", \"stories\"]);";
+	    var full_story = "EWW1.display_full_story(\"" + id + "\", \"full_story\", [\"stories\"]);";
 
 	    var element = document.getElementById(id);
 	    element.innerHTML = "<a href='#stories' onClick='" + full_story + "'><img src='" + uri + "' alt='" + uri + "'></a><p>" + this["dc:title"] + "</p>" + "<p>" + this["dcterms:alternative"] + "</p>";
@@ -346,6 +355,7 @@ var EWW1={
 	},
 
 	render_full_story: function(data) {
+	    console.log(data);
 	    //todo: replace "full_story" with customisable id
 	    EWW1.visible_stories["full_story"] = {story: this, story_items: data.items};
 	    EWW1.display_full_story("full_story", "full_story");

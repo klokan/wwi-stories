@@ -24,6 +24,8 @@ var map;
 
 function map_initialize () {
 	var brooklyn = new google.maps.LatLng(40.6743890, -73.9455);
+	var leuven = new google.maps.LatLng(50.867945, 4.712448);
+	
 	var stylez = [
 	    {
 	      featureType: "all",
@@ -35,7 +37,7 @@ function map_initialize () {
 	];
 	var mapOptions = {
 	    zoom: 11,
-	    center: brooklyn,
+	    center: leuven,
 	    mapTypeControl: false,
 	    scaleControl: false,
 	    streetViewControl: false,

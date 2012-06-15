@@ -10,6 +10,7 @@ function getParameterByName(name) {
 // #story
 
 $('#story').live("pageshow", function() {
+	$('#story-content').html( '<p style="text-align:center;">Loading...</p>' );
 	var story= 'http://www.europeana.eu/portal/record/' + getParameterByName('id').replace('-', '/');
 	$('#story-content').html( story );
 	story = EWW1.returnData.JSON(story);

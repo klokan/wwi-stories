@@ -142,8 +142,10 @@ var EWW1={
 	    return search;
 	},
 
+	//search stories
 	search: function(keyword){
 	    var search = EWW1.query_parts.base + keyword + "+" +
+	    "dc_type:story+" +
 	    EWW1.query_parts.ww1_collection + "&" + 
 	    EWW1.query_parts.key;
 	    console.log("issuing " +search);
@@ -349,7 +351,7 @@ var EWW1={
 	    EWW1.display_full_story("full_story", "full_story");
 	},
 
-	summary_info: function(data) {
+	/*deprecated	summary_info: function(data) {
 	    console.log(data);
 	    var html = "<ul>";
 	    for (var i = 0; i < data.items.length; i++){
@@ -360,6 +362,7 @@ var EWW1={
 	    var element = document.getElementById('stories');
 	    element.innerHTML = html + "</ul>";
 	},
+	*/
 
 	random_page: function(data){
 	    var page = Math.floor(Math.random() * Math.ceil(data.totalResults/data.itemsPerPage) );

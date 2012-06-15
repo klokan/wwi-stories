@@ -5,11 +5,24 @@
     <title>Europeana API Test</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="../europeana_ww1.js"></script>
+    <script>
+      function doSearch(str){
+      EWW1.query(EWW1.queries.search(str), 
+                 EWW1.callbacks.map_stories, 
+                 {
+                   full: true, 
+                   context: {render_into: "stories", 
+                             passthrough_callback: EWW1.callbacks.render_story_summary
+                   }
+                 }
+                );
+      }
+    </script>
     </head>
   <body>
     <form>
       <input type="text" id="searchbox" name="searchbox"/><br/>
-      <input type="button" value="Search" onClick="EWW1.query(EWW1.queries.search(this.form.searchbox.value), EWW1.callbacks.summary_info)"/>
+      <input type="button" value="Search" onClick="doSearch(this.form.searchbox.value)"/>
     <div id="stories">
     </div>
     <div id="full_story"></div>

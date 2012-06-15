@@ -10,9 +10,9 @@ function getParameterByName(name) {
 // #story
 
 $('#story').live("pageshow", function() {
-	$('#story-content').html( '<p style="text-align:center;">Loading...</p>' );
+	$('#full_story').html( '<p style="text-align:center;">Loading...</p>' );
 	var story= 'http://www.europeana.eu/portal/record/' + getParameterByName('id').replace('-', '/');
-	$('#story-content').html( story );
+	// $('#story-content').html( story );
 	story = EWW1.returnData.JSON(story);
 	EWW1.query(EWW1.queries.full_record(story), EWW1.callbacks.map_stories, {context: {passthrough_callback: EWW1.callbacks.render_full_story, passthrough_into: "full_story"}});
 });

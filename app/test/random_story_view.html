@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Europeana API Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="../europeana_ww1.js"></script>
+    </head>
+  <body>
+    <div id="full_story">random story loading</div>
+    <script>
+      EWW1.query(EWW1.queries.all_stories(), EWW1.callbacks.random_page, {context: {passthrough_callback: EWW1.callbacks.random_record, passthrough_into: "full_story"}});
+    </script>
+    </body>
+  </html>

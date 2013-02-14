@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Europeana API Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="../europeana_ww1.js"></script>
+    </head>
+  <body>
+    <!-- example of loading a full story : pass the story as part of the URL using ?story=story_guid e.g. file:///Users/mpciiljb/Documents/wwi-stories/test/full_story_view.html?story=http%3A//www.europeana.eu/portal/record/2020601/46D1F176E3E3DF30684877E6D73A8340095DA7FE -->
+    <div id="full_story">No story specified</div>
+    <script>
+      var href = location.href;
+      var full_story = document.getElementById('full_story');
+      if (href.match(/\?story=/)){
+        full_story.innerHTML = "";
+        var story = EWW1.decode(href.split("?story=")[1]);
+        story = EWW1.returnData.JSON(story);
+        console.log(story);
+        EWW1.query(EWW1.queries.full_record(story), EWW1.callbacks.map_stories, {context: {passthrough_callback: EWW1.callbacks.render_full_story, passthrough_into: "full_story"}});
+      }
+    </script>
+    </body>
+  </html>

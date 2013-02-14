@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Europeana API Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="../europeana_ww1.js"></script>
+    </head>
+  <body>
+    <!--div id="categories">
+    </div>
+    <script>document.getElementById('categories').innerHTML = EWW1.list_categories();</script-->
+
+    <!-- example of loading a category : pass the category as part of the URL using ?category=category_name e.g. file:///Users/mpciiljb/Documents/wwi-stories/test/story_view.html?category=Western+Front -->
+    <div id="stories">
+    </div>
+    <div id="full_story">      No category</div>
+    <script>
+      var href = location.href;
+      var full_story = document.getElementById('full_story');
+      if (href.match(/\?category=/)){
+        full_story.innerHTML = "";
+        var category = EWW1.decode(href.split("?category=")[1]);
+        category = category.replace(/\+/, " ");
+        EWW1.query(EWW1.queries.category_entries(category, "stories_only"), 
+                 EWW1.callbacks.map_stories, 
+                 {
+                   full: true, 
+                   context: {
+                     render_into: "stories", 
+                     passthrough_callback: EWW1.callbacks.render_story_summary
+                   }
+                 }
+                );
+      }
+    </script>
+    </body>
+  </html>
